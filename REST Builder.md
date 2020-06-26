@@ -10,7 +10,7 @@ REST Builder is a code generation tool built by Liferay that allows developers t
 
 Developers can define the API's contract using OpenAPI documents to describe what the API does and what resources handles in a language agnostic and human readable way, allowing both, machines and humans, to understand what the API is supposed to do.
 
-REST Builder generates the API resources model layer and the API implementation layer using the JAX-RS specification, part of the JAVA EE standards. The generation tool implements all the necessary code to access the API defined in the API contract and advanced features as pagination, search, filter, batch support..., and let the developer focus in the service business logic. 
+REST Builder generates the API resources model layer and the API implementation layer using the JAX-RS specification, one of the JAVA EE standards. The generation tool implements all the necessary code to access the API defined in the API contract and advanced features as pagination, search, filter, batch support..., and let the developer focus in the service business logic. 
 
 The generation tool also provide a GraphQL endpoint to access your API using the same API definition and with the same advances features as pagination, search, filter..., which make it even more powerful and valuable.
 
@@ -24,7 +24,7 @@ The default project structure is a parent folder with the name of the REST API, 
 
 Each module should contain the usual module configuration files: bnd.bnd and build.gradle or pom.xml depending on the desired build mechanism.
 
-Last, the implementation module should include the REST configuration file and OpenAPI documents needed by the generation tool.
+Finally, the implementation module should include the REST configuration file and OpenAPI documents needed by the generation tool.
 
 The resulting folder structure should be similar to the following:
 
@@ -38,46 +38,48 @@ In this section you'll learn how to configure the REST Builder generation with t
 
 REST Configuration file allows you to provide required parameters to REST Builder and configuration the resulting generated code.
 
-The REST configuration file has YAML format and should be located inside the implementation module with name *rest-config.yaml* by default.
+The REST configuration file has YAML format and, by default, is located inside the implementation module with name *rest-config.yaml*.
 
 The configuration parameters are:
 
-| Parameter | Description | Required | Default value |
-| --------- | ----------- | :------: | ------------: |
-| apiDir    | Directory of the API module | true | |
-| apiPackagePath | API package name | true | |
-| application | [Application information](####application-object) | true | |
-| author | Author | true | |
-| clientDir | Directory of the API module | false | |
-| clientMavenGroupdId | Group identifier of the client module | false | |
-| forcePredictableContentApplicationXML | Force the usage of XML media type in operation request bodies and responses. If no XML definition is provided, JSON definition will be used | false | true |
-| generateBatch | Generate batch endpoints | false | true |
-| generateGraphQL | Generate GraphQL endpoints | false | true |
-| generateREST | Generate REST endpoints | false | true |
-| implDir | Directory where the generated code will be stored inside each module | false | src/main/java |
-| licenseName | Application license name | false | Apache 2.0 |
-| licenseUrl | License URL | false | http://www.apache.org/licenses/LICENSE-2.0.html |
-| testDir | Directory of the integration test module | false | |
-| warningsEnabled | Enable warnings during the REST Builder execution | false | true |
+| Field Name | Type  | Description | Required |
+| ---------- | :---: | ----------- | :------: |
+| apiDir | string | Directory of the API module | true |
+| apiPackagePath | string | API package name | true |
+| application | [Application Object](#application-object) | Information about the application | true |
+| author | string | Author name | true |
+| clientDir | string | Directory of the API module | false |
+| clientMavenGroupdId | string | Group identifier of the client module | false |
+| forcePredictableContentApplicationXML | boolean | Force the usage of XML media type in operation request bodies and responses. If no XML definition is provided, JSON definition will be used. Defaults to `true` | false |
+| generateBatch | boolean | Generate batch endpoints. Defaults to `true` | false |
+| generateGraphQL | boolean | Generate GraphQL endpoints. Defaults to `true` | false |
+| generateREST | boolean | Generate REST endpoints. Defaults to `true` | false |
+| implDir | string | Directory where the generated code will be stored inside each module. Defaults to `src/main/java` | false |
+| licenseName | string | Application license name. Defaults to `Apache 2.0` | false |
+| licenseUrl | string | License URL. Defaults to `http://www.apache.org/licenses/LICENSE-2.0.html` | false |
+| testDir | string | Directory of the integration test module | false |
+| warningsEnabled | boolean | Enable warnings during the REST Builder execution. Defaults to `true` | false |
 
-#### Application object
+#### Application Object
 The Application object parameters are:
 
-| Parameter | Description | Required | Default value |
-| --------- | ----------- | :------: | ------------: |
-| baseUri    | Application base URI | true | |
-| className | Name of the class with the JAX-RS application | true | |
-| name | Application name | true | |
-| security | [Security information](####security-object) | false | |
+| Field Name | Type  | Description | Required |
+| ---------- | :---: | ----------- | :------: |
+| baseUri    | string | Application base URI | true |
+| className | string | Name of the class with the JAX-RS application | true |
+| name | string | Application name | true |
+| security | [Security Object](#security-object) | Information about application security | false |
 
-#### Security object
+#### Security Object
 The Security object parameters are:
 
-| Parameter | Description | Required | Default value |
-| --------- | ----------- | :------: | ------------: |
-| basicAuth | Basic authentication | false | |
-| guestAllowed | Allow guest access | false | |
-| oAuth | oAuth authentication | false | |
+|| Field Name | Type  | Description | Required |
+| ---------- | :---: | ----------- | :------: |
+| basicAuth | string | Basic authentication | false |
+| guestAllowed | string | Allow guest access | false |
+| oAuth | string | oAuth authentication | false |
+
+### A REST Configuration example
 
 An example of a valid REST Configuration file is:
 ```yaml
@@ -94,7 +96,7 @@ testDir: "../guestbook-test/src/testIntegration/java"
 
 ### OpenAPI Document
 
-The OpenAPI Document describes what the API does and which are the resources to interact with. REST Builder is compatible with the OAS 3.*.* versions and support OpenAPI documents in YAML format.
+The OpenAPI Document describes what the API does and which are the resources to interact with. REST Builder is compatible with the OAS 3.\*.\* versions and support OpenAPI documents in YAML format.
 
 The OpenAPI document has YAML format and, by default, should be located inside the implementation module with the name *rest-openapi.yaml*
 
@@ -102,10 +104,10 @@ The  most common fields are defined in the table below. For an exhaustive and de
 
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
-| components | [Components Object](####components-object) | Contains the schema resources | false |
-| info | [Info Object](####info-object)| Metadata about the API | true |
+| components | [Components Object](#components-object) | Contains the schema resources | false |
+| info | [Info Object](#info-object)| Metadata about the API | true |
 | openapi | string | The semantic version number of the OpenAPI Specification version used in the document | true |
-| paths | [Paths Object](####paths-object) | The available paths and operations for the API | true |
+| paths | [Paths Object](#paths-object) | The available paths and operations for the API | true |
 
 #### Components Object
 
@@ -113,11 +115,11 @@ The components field contains objects to be referenced from other places in the 
 
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
-| schema | Map[String, [Schema Object](####schema-object)] | A map with schema definitions | false |
+| schema | Map[String, [Schema Object](#schema-object)] | A map with schema definitions | false |
 
 #### Schema Object
 
-The schema is defined by description, format, type and a set of properties that are also [Schema Objects](####schema-object). To read a complete definition of the schema object refer to the specification.
+The schema is defined by description, format, type and a set of properties that are also [Schema Objects](#schema-object). To read a complete definition of the schema object refer to the specification.
 
 #### Info Object
 
@@ -127,7 +129,7 @@ The info object is composed by:
 | ---------- | :---: | ----------- | :------: |
 | title | string | The title of the application | true |
 | description | string | A short description of the application | false |
-| license | [License Object](####licenseObject) | The license information for the exposed API | false |
+| license | [License Object](#licenseObject) | The license information for the exposed API | false |
 | version | string | The version of the application | true |
 
 #### License Object
@@ -145,7 +147,7 @@ The paths object holds the information relative to the individual endpoints and 
 
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
-| /{path} | [Path Item Object](####path-item-object ) | Information about an individual endpoint. The field name MUST begin with a slash | false |
+| /{path} | [Path Item Object](#path-item-object ) | Information about an individual endpoint. The field name must begin with a slash | false |
 
 #### Path Item Object
 
@@ -155,11 +157,11 @@ The path item object is composed by:
 | ---------- | :---: | ----------- | :------: |
 | summary| string | A summary, intended to apply to all operations in this path | false |
 | description | string | A description, intended to apply to all operations in this path | false |
-| get | [Operation Object](#####operation-object) | A definition of a GET operation on this path | false |
-| put | [Operation Object](#####operation-object) | A definition of a PUT operation on this path | false |
-| post | [Operation Object](#####operation-object) | A definition of a POST operation on this path | false |
-| delete | [Operation Object](#####operation-object) | A definition of a DELETE operation on this path | false |
-| patch | [Operation Object](#####operation-object) | A definition of a PATCH operation on this path | false |
+| get | [Operation Object](##operation-object) | A definition of a GET operation on this path | false |
+| put | [Operation Object](##operation-object) | A definition of a PUT operation on this path | false |
+| post | [Operation Object](##operation-object) | A definition of a POST operation on this path | false |
+| delete | [Operation Object](##operation-object) | A definition of a DELETE operation on this path | false |
+| patch | [Operation Object](##operation-object) | A definition of a PATCH operation on this path | false |
 
 #### Operation Object
 
@@ -169,10 +171,10 @@ The operation object describes a single API operation on a path:
 | ---------- | :---: | ----------- | :------: |
 | summary | string | A short summary of what the operation does | false |
 | description | string | A description of the operation behavior | false |
-| operationId | string | Unique string used to identify the operation. REST Builder use the operationId to uniquely identify an operation, therefore, it is RECOMMENDED to follow common programming naming conventions |
-| parameters | [[Parameter Object](####parameter-object)] | A list of parameters that are applicable for this operation | false |
-| requestBody | [Request Body Object](####request-body-object) | The request body applicable for this operation | false |
-| responses | [Responses Object](####responses-object) | The list of possible responses as they are returned from executing this operation | true |
+| operationId | string | Unique string used to identify the operation. REST Builder use the operationId to uniquely identify an operation, therefore, it is recommended to follow common programming naming conventions | false |
+| parameters | [[Parameter Object](#parameter-object)] | A list of parameters that are applicable for this operation | false |
+| requestBody | [Request Body Object](#request-body-object) | The request body applicable for this operation | false |
+| responses | [Responses Object](#responses-object) | The list of possible responses as they are returned from executing this operation | true |
 | tags | \[string\] | A list of tags for the operation | false |
 
 #### Parameter Object
@@ -192,8 +194,8 @@ The parameter is defined by:
 | name | string | The name of the parameter. Parameter names are *case sensitive* | true |
 | in | string | One of the possible parameter locations explained in the previous list | true |
 | description | string | A brief description of the parameter | false |
-| required | boolean | Determines whether this parameter is mandatory. If the parameter location is "path" | true |
-| schema | [Schema Object](####schema-object) | The schema defining the type of the parameter | true |
+| required | boolean | Determines whether this parameter is mandatory | true |
+| schema | [Schema Object](#schema-object) | The schema defining the type of the parameter | true |
 
 #### Request Body Object
 
@@ -202,7 +204,7 @@ The request body object describes a single request body:
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
 | description | string | A brief description of the request body | false |
-| content | Map[string, [Media Type Object](####media-type-object)] | The content of the request body | true |
+| content | Map[string, [Media Type Object](#media-type-object)] | The content of the request body | true |
 | required | boolean | Determines if the request body is required in the request. Defaults to `false` | false |
 
 #### Media Type Object
@@ -211,7 +213,7 @@ Each Media Type Object provides schema and examples for the media type identifie
 
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
-| schema | [Schema Object](####schema-object) | The schema defining the content of the request, response, or parameter | false |
+| schema | [Schema Object](#schema-object) | The schema defining the content of the request, response, or parameter | false |
 
 #### Responses Object
 
@@ -222,8 +224,8 @@ The default may be used as a default response object for all HTTP codes that are
 
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
-| default | [Response Object](####response-object) | The documentation of responses other than the ones declared for specific HTTP response codes | false |
-| {HTTP Status Code} | [Response Object](####response-object) | the expected response for that HTTP status code | false |
+| default | [Response Object](#response-object) | The documentation of responses other than the ones declared for specific HTTP response codes | false |
+| {HTTP Status Code} | [Response Object](#response-object) | The expected response for that HTTP status code | false |
 
 #### Response Object
 
@@ -232,7 +234,7 @@ The response object describes a single response from an API Operation
 | Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
 | description | string | A short description of the response | true |
-| content | Map[string, [Media Type Object](####media-type-object)] | A map containing descriptions of potential response payloads | false |
+| content | Map[string, [Media Type Object](#media-type-object)] | A map containing descriptions of potential response payloads | false |
 
 ### An OpenAPI example
 
@@ -330,7 +332,7 @@ paths:
 
 ## Using Blade and Project Templates
 
-[Blade CLI](https://help.liferay.com/hc/en-us/articles/360017880092-Blade-CLI) is a command tool to help creating a new Liferay module. It creates the folder structure and necessary files to kickstart your project, allowing the developer to select between Gradle or Maven build tools.
+[Blade CLI](https://help.liferay.com/hc/en-us/articles/360017880092-Blade-CLI) is a command tool to help creating a new Liferay module. It creates the folder structure and necessary files to kick-start your project, allowing the developer to select between Gradle or Maven build tools.
 
 Blade offers many project templates, including REST Builder.
 
@@ -346,7 +348,7 @@ A list of all possible parameters and usage can be found in [Blade CLI](https://
 
 ## Running REST Builder and understanding generating code
 
-Once you had the folder structure set and the REST Configuration file and OpenAPI documents defined, you can run REST Builder tool to generate the scaffolding for your REST web service. This can be done using Maven and Gradle REST Builder plugins.
+Once you have the folder structure set and the REST Configuration file and OpenAPI documents defined, you can run REST Builder tool to generate the scaffolding for your REST web service. This can be done using Maven or Gradle REST Builder plugins.
 
 ### Using Gradle
 
@@ -356,7 +358,7 @@ To use the REST Builder Gradle plugin you need to include it in your build.gradl
 ```
 buildscript {
     dependencies {
-        classpath group: "com.liferay", name: "com.liferay.gradle.plugins.rest.builder", version: "1.0.113"
+        classpath group: "com.liferay", name: "com.liferay.gradle.plugins.rest.builder", version: "1.0.112"
     }
 
     repositories {
@@ -372,16 +374,18 @@ apply plugin: "com.liferay.portal.tools.rest.builder"
 
 The plugin adds the `buildRest` task to your project. This task has two arguments:
 
-| Parameter | Description | Required | Default value |
-| --------- | ----------- | :------: | ------------: |
-| copyrightFile | File with the Copyright header to be used in the generated code | false | null |
-| restConfigDir | Directory containing your REST web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder | false | ${project.projectDir} |
+| Parameter | Description | Required | 
+| --------- | ----------- | :------: |
+| copyrightFile | File with the Copyright header to be used in the generated code. Defaults to `null` | false |
+| restConfigDir | Directory containing your REST web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder. Defaults to `${project.projectDir}` | false |
 
-To run the task you need to use the Gradle Wrapper to execute `gradlew buildRest`. The task should finish successfully generating the source files of the configured modules. In case of error, a descriptive message should be provided to allow the developer to easily locate it and fix it.
+To run the task you need to use the Gradle Wrapper to execute `gradlew buildRest`. 
+
+The task should finish successfully generating the source files of the configured modules. In case of error, a descriptive message should be provided to allow the developer to easily locate it and fix it.
 
 ### Using Maven
 
-REST Builder is also available in Maven with the REST Builder Mavnen plugin.
+REST Builder is also available in Maven with the REST Builder Maven plugin.
 
 To use the plugin you need to include it in the project's root pom.xml file:
 ```xml
@@ -391,7 +395,7 @@ To use the plugin you need to include it in the project's root pom.xml file:
         <plugin>
             <groupId>com.liferay</groupId>
             <artifactId>com.liferay.portal.tools.rest.builder</artifactId>
-            <version>1.0.113</version>
+            <version>1.0.112</version>
             <configuration>
             </configuration>
         </plugin>
@@ -402,10 +406,10 @@ To use the plugin you need to include it in the project's root pom.xml file:
 
 The plugind adds the Maven Goal `build-rest:build` to run the code generation. There are two optional parameters to be added in the configuration section:
 
-| Parameter | Description | Required | Default value |
-| --------- | ----------- | :------: | ------------: |
-| copyrightFile | File with the Copyright header to be used in the generated code | false | null |
-| restConfigDir | Directory containing your REST web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder | false | ${project.projectDir} |
+| Parameter | Description | Required |
+| --------- | ----------- | :------: |
+| copyrightFile | File with the Copyright header to be used in the generated code. Defaults to `null` | false |
+| restConfigDir | Directory containing your REST web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder. Defaults to `${project.projectDir}` | false |
 
 To run the task execute the Maven goal command with `mvn build-rest:build`. The goal should finish generating the source files or with a meaningful error.
 
@@ -425,28 +429,30 @@ The two packages containing DTOs and resources are exported to be used by other 
 
 #### The implementation module
 
-Code generated in the implementation module consists of jaxrs main entities and the resource endpoints.
+Code generated in the implementation module consists of JAX-RS main entities and the resource endpoints.
 
 The jaxrs package contains the JAX-RS Application class that register the REST web service in the portal.
 
-The resource package contains the resource endpoints defined in the OpenAPI paths section. Each resource has a base implementation called Base*ResourceImpl offering helper methods to implement the endpoint logic. This class is extended by the correspondent *ResourceImpl class where the developer should add the business logic. There is also a OpenAPIResourceImpl class that registers an endpoint in `http://[host]:[port]/o/[APPLICATION_NAME]/[API_VERSION]/openapi.[type]` allowing to obtain the OpenAPI document, the API contract, in JSON and YAML format.
+The resource package contains the resource endpoints defined in the OpenAPI paths section. Each resource has a base implementation called Base\*ResourceImpl offering helper methods to implement the endpoint logic. This class is extended by the correspondent \*ResourceImpl class where the developer should add the business logic. There is also a OpenAPIResourceImpl class that registers an endpoint in `http://[host]:[port]/o/[APPLICATION_NAME]/[API_VERSION]/openapi.[type]` to obtain the OpenAPI document, the API contract, in JSON and YAML format.
 
 If GraphQL is configured, there will be a graphql package with the classes needed to access your API through GraphQL queries and mutations.
 
 #### The client module
 
-The client module will be generated if it is configured in the REST configuration YAML file. It is a fully operative client for the API defined in your OpenAPI Document, with its own DTOs, resources, serializers and deserializers and the HttpInvoker class to make the HTTP requests.
+The client module will be generated if it is configured in the REST configuration YAML file. It is a fully operative client for the API defined in your OpenAPI Document, with its own DTOs, resources, serializers, deserializers and the HttpInvoker class to make the HTTP requests.
 
 #### The test module
 
 The test module will be generated if it is configured in the REST configuration YAML file. This module contains generated classes to test all the endpoints and methods defined in your API contract, making requests as a external service. It uses the client generated in the client module to make these requests.
 
-Every endpoint has a Base*ResourceTestCase class that uses a Template Pattern, providing the general structure to test each endpoint method and letting the developer to fill just the specific code related to the business logic in the *ResourceTest class.
+Every endpoint has a Base\*ResourceTestCase class that uses a Template Pattern, providing the general structure to test each endpoint method and letting the developer to fill just the specific code related to the business logic in the \*ResourceTest class.
 
 
 ## Implementing REST API
 
-The main entry point to implement your REST API is the *ResourceImpl classes inside the implementation module. This is where you need to add your business logic to be executed when somebody access your REST web service. It is important to remark that you should not add any code inside classes annotated as `@Generated` as this classes will be recreated each time REST Builder is executed. This can be necessary if you need to modify the API definition or expand it.
+The entry points to implement your REST API are the \*ResourceImpl classes inside the implementation module. This is where you need to add your business logic to be executed when somebody access your REST web service. 
+
+It is important to remark that you should not add any code inside classes annotated as `@Generated` as this classes will be recreated each time REST Builder is executed. This can be necessary if you need to modify the API definition or expand it.
 
 If test module is configured you should also add the correspondent code to test your logic in the *ResourceTest classes.
 
