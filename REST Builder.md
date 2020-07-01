@@ -2,43 +2,41 @@
 
 ## Introduction
 
-REST Builder provides an easy way to develop a REST API for your new or existing web services. This services can be invoke through HTTP requests from external systems. Decoupling your service with a REST API gives you flexibility to integrate with different front-end technologies, mobile apps and 3rd party or legacy systems.
+REST Builder provides an easy way to develop your **GraphQL and REST API** for your new or existing web services. This services can be invoke through HTTP requests from external systems. Decoupling your service with an API gives you flexibility to integrate with different front-end technologies, mobile apps and 3rd party or legacy systems.
 
 ## What it is REST Builder?
 
-REST Builder is a code generation tool built by Liferay that allows developers to define custom REST APIs following the [OpenAPI Specification (OAS)](https://www.openapis.org/) in a Design First approach.
+REST Builder is a **code generation tool** built by Liferay that allows developers to define custom APIs following the [OpenAPI Specification (OAS)](https://www.openapis.org/) in a **Design First** approach.
 
 Developers can define the API's contract using OpenAPI documents to describe what the API does and what resources handles in a language agnostic and human readable way, allowing both, machines and humans, to understand what the API is supposed to do.
 
-REST Builder generates the API resources model layer and the API implementation layer using the JAX-RS specification, one of the JAVA EE standards. The generation tool implements all the necessary code to access the API defined in the API contract and advanced features as pagination, search, filter, batch support..., and let the developer focus in the service business logic. 
+REST Builder generates the API resources model layer and the API implementation layer using the JAX-RS specification, one of the JAVA EE standards, and the GraphQL servlet. The generation tool implements all the necessary code to access the API defined in the API contract and advanced features such as pagination, search, filter, batch support..., letting the developer focus in the service business logic, what makes this tool very powerful and valuable. 
 
-The generation tool also provide a GraphQL endpoint to access your API using the same API definition and with the same advances features as pagination, search, filter..., which make it even more powerful and valuable.
-
-REST Builder can generate an API client implementation to communicate with the REST API and an integration test module to test the API.
+REST Builder generate a JAVA client to communicate with the API and an integration test module to test the API from the outside as a external application.
 
 ## Project Structure
 
-REST Builder tool generate code splitted in multiple modules in order to offer a clean and decoupled implementation of a REST API.
+REST Builder tool generates code splitted in multiple modules in order to offer a clean and decoupled implementation of your GraphQL and REST APIs.
 
-The default project structure is a parent folder with the name of the REST API, usually the artifact identifier, containing a subfolder with the API module, with -api suffix, and a subfolder with the implementation module, with the -impl sufix. If REST API client and integration tests are configured in the REST Configuration file, the parent folder should contain two additional subfolders with -client and -test suffixes, where the client and test code will be generated.
+The default project structure is a parent folder with the name of the application, usually the artifact identifier, containing a subfolder with the API module, with -api suffix, and a subfolder with the implementation module, with the -impl sufix. If API client and integration tests are configured, the parent folder should contain two additional subfolders with -client and -test suffixes, where the client and test code will be generated.
 
 Each module should contain the usual module configuration files: bnd.bnd and build.gradle or pom.xml depending on the desired build mechanism.
 
-Finally, the implementation module should include the REST configuration file and OpenAPI documents needed by the generation tool.
+Finally, the implementation module should include the API configuration file and OpenAPI documents needed by the generation tool.
 
 The resulting folder structure should be similar to the following:
 
 <img src="folder_structure.png" alt="Example of the REST Builder folder structure" width="220" style="display: block;"/>
 
-## Defining the OpenAPI document and REST Configuration file
+## Defining the OpenAPI document and API Configuration file
 
-In this section you'll learn how to configure the REST Builder generation with the REST Configuration file and describe your API using the OpenAPI document (or set of documents).
+In this section you'll learn how to configure the REST Builder generation with the API Configuration file and describe your API using the OpenAPI document (or set of documents).
 
-### REST Configuration file
+### API Configuration file
 
-REST Configuration file allows you to provide required parameters to REST Builder and configuration the resulting generated code.
+The API Configuration file allows you to provide the required parameters and configuration to REST Builder tool, on which the generated code will depend.
 
-The REST configuration file has YAML format and, by default, is located inside the implementation module with name *rest-config.yaml*.
+The API configuration file uses YAML format and, by default, is located inside the implementation module with the name *rest-config.yaml*.
 
 The configuration parameters are:
 
@@ -48,7 +46,7 @@ The configuration parameters are:
 | apiPackagePath | string | API package name | true |
 | application | [Application Object](#application-object) | Information about the application | true |
 | author | string | Author name | true |
-| clientDir | string | Directory of the API module | false |
+| clientDir | string | Directory of the JAVA client module. If it is not set, the client will not be generated | false |
 | clientMavenGroupdId | string | Group identifier of the client module | false |
 | forcePredictableContentApplicationXML | boolean | Force the usage of XML media type in operation request bodies and responses. If no XML definition is provided, JSON definition will be used. Defaults to `true` | false |
 | generateBatch | boolean | Generate batch endpoints. Defaults to `true` | false |
@@ -57,7 +55,7 @@ The configuration parameters are:
 | implDir | string | Directory where the generated code will be stored inside each module. Defaults to `src/main/java` | false |
 | licenseName | string | Application license name. Defaults to `Apache 2.0` | false |
 | licenseUrl | string | License URL. Defaults to `http://www.apache.org/licenses/LICENSE-2.0.html` | false |
-| testDir | string | Directory of the integration test module | false |
+| testDir | string | Directory of the integration test module. If it is not set, the integration tests will not be generated | false |
 | warningsEnabled | boolean | Enable warnings during the REST Builder execution. Defaults to `true` | false |
 
 #### Application Object
@@ -79,9 +77,9 @@ The Security object parameters are:
 | guestAllowed | string | Allow guest access | false |
 | oAuth | string | oAuth authentication | false |
 
-### A REST Configuration example
+### An API Configuration example
 
-An example of a valid REST Configuration file is:
+An example of a valid API Configuration file is:
 ```yaml
 apiDir: "../guestbook-api/src/main/java"
 apiPackagePath: "com.liferay.guestbook"
@@ -98,7 +96,7 @@ testDir: "../guestbook-test/src/testIntegration/java"
 
 The OpenAPI Document describes what the API does and which are the resources to interact with. REST Builder is compatible with the OAS 3.\*.\* versions and support OpenAPI documents in YAML format.
 
-The OpenAPI document has YAML format and, by default, should be located inside the implementation module with the name *rest-openapi.yaml*
+The OpenAPI document uses YAML format and, by default, should be located inside the implementation module with the name *rest-openapi.yaml*
 
 The  most common fields are defined in the table below. For an exhaustive and detailed list of fields, please refer to the [official OAS specification](https://swagger.io/specification/)
 
@@ -252,7 +250,7 @@ components:
                     type: string
             type: object
 info:
-    description: "Guestbook REST API"
+    description: "Guestbook API"
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -334,31 +332,33 @@ paths:
 
 [Blade CLI](https://help.liferay.com/hc/en-us/articles/360017880092-Blade-CLI) is a command tool to help creating a new Liferay module. It creates the folder structure and necessary files to kick-start your project, allowing the developer to select between Gradle or Maven build tools.
 
-Blade offers many project templates, including REST Builder.
+Blade offers many project templates, including REST Builder, providing a scaffolding to your API web service.
 
-To create your RESTBuilder project with blade you should execute:
+To create your API web service inside your Liferay Workspace with blade you should go to the modules folder and execute:
 ```
-blade create --template rest-builder --liferay-version 7.2 guestbook
+blade create --template rest-builder guestbook
 ```
 
-This command will set the REST Builder folder structure, build script files of the selected build tool, and rest-config.yaml and rest-openapi.yaml with basic structure and parameters.
+This command will set your API web service folder structure, build script files of the selected build tool, and rest-config.yaml and rest-openapi.yaml with basic structure and parameters.
 
-A list of all possible parameters and usage can be found in [Blade CLI](https://help.liferay.com/hc/en-us/articles/360017880092-Blade-CLI) and [Project Templates](https://help.liferay.com/hc/en-us/articles/360018170431-Introduction-to-Project-Templates-) documentation.
+More detailed information can be found in [Blade CLI](https://help.liferay.com/hc/en-us/articles/360017880092-Blade-CLI) and [Project Templates](https://help.liferay.com/hc/en-us/articles/360018170431-Introduction-to-Project-Templates-) documentation.
 
 
-## Running REST Builder and understanding generating code
+## Running REST Builder and understanding the generated code
 
-Once you have the folder structure set and the REST Configuration file and OpenAPI documents defined, you can run REST Builder tool to generate the scaffolding for your REST web service. This can be done using Maven or Gradle REST Builder plugins.
+Once you have the folder structure set and the API configuration file and OpenAPI documents defined, you can run REST Builder tool to generate the scaffolding for your API web service. This can be done using Maven or Gradle REST Builder plugins.
+
+\* *To find out which version of the Gradle and Maven plugins to use, go to Maven Central or Maven Repository to get the latest available version published.*
 
 ### Using Gradle
 
-The REST Builder Gradle plugin lets you execute REST Builder to generate the source files of your REST web service.
+The REST Builder Gradle plugin lets you execute REST Builder to generate the source files of your API web service.
 
 To use the REST Builder Gradle plugin you need to include it in your build.gradle file:
 ```
 buildscript {
     dependencies {
-        classpath group: "com.liferay", name: "com.liferay.gradle.plugins.rest.builder", version: "1.0.112"
+        classpath group: "com.liferay", name: "com.liferay.gradle.plugins.rest.builder", version: "${REST.Builder.version}"
     }
 
     repositories {
@@ -377,7 +377,7 @@ The plugin adds the `buildRest` task to your project. This task has two argument
 | Parameter | Description | Required | 
 | --------- | ----------- | :------: |
 | copyrightFile | File with the Copyright header to be used in the generated code. Defaults to `null` | false |
-| restConfigDir | Directory containing your REST web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder. Defaults to `${project.projectDir}` | false |
+| restConfigDir | Directory containing your API web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder. Defaults to `${project.projectDir}` | false |
 
 To run the task you need to use the Gradle Wrapper to execute `gradlew buildRest`. 
 
@@ -395,7 +395,7 @@ To use the plugin you need to include it in the project's root pom.xml file:
         <plugin>
             <groupId>com.liferay</groupId>
             <artifactId>com.liferay.portal.tools.rest.builder</artifactId>
-            <version>1.0.112</version>
+            <version>${REST.Builder.version}</version>
             <configuration>
             </configuration>
         </plugin>
@@ -409,7 +409,7 @@ The plugind adds the Maven Goal `build-rest:build` to run the code generation. T
 | Parameter | Description | Required |
 | --------- | ----------- | :------: |
 | copyrightFile | File with the Copyright header to be used in the generated code. Defaults to `null` | false |
-| restConfigDir | Directory containing your REST web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder. Defaults to `${project.projectDir}` | false |
+| restConfigDir | Directory containing your API web service definition files, rest-config.yaml and rest-openapi.yaml. Usually the implementation module folder. Defaults to `${project.projectDir}` | false |
 
 To run the task execute the Maven goal command with `mvn build-rest:build`. The goal should finish generating the source files or with a meaningful error.
 
@@ -423,47 +423,47 @@ The API module contains the model of your API, your DTOs (Data Transfer Objects)
 
 The DTOs represents the objects defined in the components section of the OpenAPI Document. They are meant to be transferred in the API request and responses. So, as a developer, you need to use it in your business logic to process the API requests and return them as response when it is needed.
 
-The resources package contains the representation of the API resources correspondent to the paths section of the OpenAPI Document. This resources are implemented in the implementation module and mapped to the specified path.
+The resources package contains the representation of the API resources correspondent to the paths section of the OpenAPI Document. These resources are implemented in the implementation module and mapped to the specified path.
 
 The two packages containing DTOs and resources are exported to be used by other modules, as the implementation module.
 
 #### The implementation module
 
-Code generated in the implementation module consists of JAX-RS main entities and the resource endpoints.
+Code generated in the implementation module consists of JAX-RS main entities, the resource endpoints and the GraphQL servlet, queries and mutations.
 
-The jaxrs package contains the JAX-RS Application class that register the REST web service in the portal.
+The jaxrs package contains the JAX-RS Application class that register the API web service in the portal.
 
 The resource package contains the resource endpoints defined in the OpenAPI paths section. Each resource has a base implementation called Base\*ResourceImpl offering helper methods to implement the endpoint logic. This class is extended by the correspondent \*ResourceImpl class where the developer should add the business logic. There is also a OpenAPIResourceImpl class that registers an endpoint in `http://[host]:[port]/o/[APPLICATION_NAME]/[API_VERSION]/openapi.[type]` to obtain the OpenAPI document, the API contract, in JSON and YAML format.
 
-If GraphQL is configured, there will be a graphql package with the classes needed to access your API through GraphQL queries and mutations.
+The graphql package contains the GraphQL servlet and with the classes needed to access your API through GraphQL queries and mutations.
 
 #### The client module
 
-The client module will be generated if it is configured in the REST configuration YAML file. It is a fully operative client for the API defined in your OpenAPI Document, with its own DTOs, resources, serializers, deserializers and the HttpInvoker class to make the HTTP requests.
+The client module will be generated if it is configured in the API configuration YAML file. It is a fully operative client for the API defined in your OpenAPI Document, with its own DTOs, resources, serializers, deserializers and the HttpInvoker class to make the HTTP requests.
 
 #### The test module
 
-The test module will be generated if it is configured in the REST configuration YAML file. This module contains generated classes to test all the endpoints and methods defined in your API contract, making requests as a external service. It uses the client generated in the client module to make these requests.
+The test module will be generated if it is configured in the API configuration YAML file. This module contains generated classes to test all the endpoints and methods defined in your API contract, making requests as a external service. It uses the client generated in the client module to make these requests.
 
 Every endpoint has a Base\*ResourceTestCase class that uses a Template Pattern, providing the general structure to test each endpoint method and letting the developer to fill just the specific code related to the business logic in the \*ResourceTest class.
 
 
-## Implementing REST API
+## Implementing the API
 
-The entry points to implement your REST API are the \*ResourceImpl classes inside the implementation module. This is where you need to add your business logic to be executed when somebody access your REST web service. 
+The entry points to implement your API are the \*ResourceImpl classes inside the implementation module. This is where you need to add your business logic to be executed when somebody access your API web service. 
 
-It is important to remark that you should not add any code inside classes annotated as `@Generated` as this classes will be recreated each time REST Builder is executed. This can be necessary if you need to modify the API definition or expand it.
+It is important to remark that you should not add any code inside classes annotated as `@Generated` as these classes will be recreated each time REST Builder is executed. This can be necessary if you need to modify the API definition or expand it.
 
 If test module is configured you should also add the correspondent code to test your logic in the *ResourceTest classes.
 
-Once you finished you can deploy your REST webservice and use it in the URL:
+Once you finished you can deploy your API web service and use it in the URL:
 ```
 http://[host]:[port]/o/[APPLICATION_NAME]/[API_VERSION]/
 ```
 
-For example, using your Guestwook REST web service locally will be in the URL:
+For example, using your Guestbook API web service locally will be in the URL:
 ```
 http://localhost:8080/o/guestbook/v1.0
 ```
 
-To be sure your REST webservice is correctly deployed you can use the OSGi console to list all the JAX-RS endpoints with the command `jaxrs:check`
+To be sure your API web service is correctly deployed you can use the OSGi console to list all the JAX-RS endpoints with the command `jaxrs:check`
