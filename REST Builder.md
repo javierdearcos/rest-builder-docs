@@ -264,7 +264,7 @@ paths:
                 Retrieves the guests
             operationId: getGuestsPage
             responses:
-                default:
+                200:
                     content:
                         application/json:
                             schema:
@@ -276,8 +276,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Guest"
                                 type: array
-                    description:
-                        default response
             tags: ["Guest"]
         post:
             description:
@@ -292,7 +290,7 @@ paths:
                         schema:
                             $ref: "#/components/schemas/Guest"
             responses:
-                default:
+                200:
                     content:
                         application/json:
                             schema:
@@ -300,22 +298,20 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Guest"
-                    description:
-                        default response
             tags: ["Guest"]
-    /guests/{guestId}:
+    /guests/{id}:
         get:
             description:
                 Retrieves the guest with given identifier
             operationId: getGuest
             parameters:
                 - in: path
-                  name: guestId
+                  name: id
                   required: true
                   schema:
                       type: string
             responses:
-                default:
+                200:
                     content:
                         application/json:
                             schema:
@@ -323,8 +319,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Guest"
-                    description:
-                        default response
             tags: ["Guest"]
 ```
 
