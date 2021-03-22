@@ -71,7 +71,7 @@ The Application object parameters are:
 #### Security Object
 The Security object parameters are:
 
-|| Field Name | Type  | Description | Required |
+| Field Name | Type  | Description | Required |
 | ---------- | :---: | ----------- | :------: |
 | basicAuth | string | Basic authentication | false |
 | guestAllowed | string | Allow guest access | false |
