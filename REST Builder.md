@@ -48,7 +48,10 @@ The configuration parameters are:
 | author | string | Author name | true |
 | clientDir | string | Directory of the JAVA client module. If it is not set, the client will not be generated | false |
 | clientMavenGroupdId | string | Group identifier of the client module | false |
+| forceClientVersionDescription | boolean | Force adding a message to the description that reflects the last version of the client. Defaults to `true` | false |
 | forcePredictableContentApplicationXML | boolean | Force the usage of XML media type in operation request bodies and responses. If no XML definition is provided, JSON definition will be used. Defaults to `true` | false |
+| forcePredictableOperationId | boolean | Force setting a predictable operationId based on the path and the return type. Defaults to `true` | false |
+| forcePredictableSchemaPropertyName | boolean | Force a consistent naming scheme for properties based on the schema returned. Defaults to `true` | false |
 | generateBatch | boolean | Generate batch endpoints. Defaults to `true` | false |
 | generateGraphQL | boolean | Generate GraphQL endpoints. Defaults to `true` | false |
 | generateREST | boolean | Generate REST endpoints. Defaults to `true` | false |
